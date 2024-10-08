@@ -1,2 +1,3 @@
-# Proyecto_6
-Aplicación de recomendaciones de peliculas
+# flutter_application_peliculas
+
+A new Flutter project.
