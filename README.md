@@ -1,3 +1,1 @@
-# flutter_application_peliculas
-
-A new Flutter project.
+<h1>Aplicacion de recomendacion de peliculas</h1>

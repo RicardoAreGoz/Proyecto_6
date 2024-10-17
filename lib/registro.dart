@@ -60,7 +60,8 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             TextField(
               controller: _roleController,
-              decoration: InputDecoration(labelText: 'Rol (Usuario o Administrador)'),
+              decoration:
+                  InputDecoration(labelText: 'Rol (Usuario o Administrador)'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
