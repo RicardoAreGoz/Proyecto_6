@@ -55,37 +55,72 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext) {
     return Scaffold(
       appBar: AppBar(title: Text('Iniciar Sesión')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Correo'),
+      body: Center(
+        child: Container(
+          width: 400,
+          height: 250,
+          decoration: BoxDecoration(
+            color:Color.fromARGB(199, 230, 234, 236),
+            borderRadius: BorderRadius.circular(16),
+            ),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(labelText: 'Correo'),
               ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Contraseña'),
-              obscureText: true,
+              TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(labelText: 'Contraseña'),
+                obscureText: true,
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 25,),
               ElevatedButton(
-                onPressed: _login, 
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  foregroundColor: Colors.white,
+                  textStyle: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500
+                  ),
+                ),
+                onPressed: _login,
                 child: Text('Iniciar Sesión'),
               ),
-              ElevatedButton(onPressed: () {
+              SizedBox(height: 6,),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  foregroundColor: Color.fromARGB(255, 42, 45, 71),
+                  textStyle: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => RegisterPage()),
                 );
-              }, 
-              child: Text('Ir al registro'),)
-          ],
+              },
+              child: Text('Registrarse'),)
+            ],
           ),
-          ),
+        ),
+      ),
     );
   }
 }
