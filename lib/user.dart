@@ -5,8 +5,6 @@ import 'login.dart';
 class UserPage extends StatelessWidget {
   final SupabaseClient _supabase = Supabase.instance.client;
 
-  const UserPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
