@@ -9,10 +9,10 @@ class UserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Página de Usuario'),
+        title: Text('Página de Usuario'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
+            icon: Icon(Icons.logout),
             onPressed: () async {
               await _supabase.auth.signOut();
               Navigator.pushReplacement(
@@ -39,7 +39,7 @@ class UserPage extends StatelessWidget {
           final userData = snapshot.data as Map<String, dynamic>;
           return Center(
             child: Text('Bienvenido, ${userData['full_name']}',
-                style: const TextStyle(fontSize: 24)),
+                style: TextStyle(fontSize: 24)),
           );
         },
       ),

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
-
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -46,29 +44,29 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Registro de Usuario')),
+      appBar: AppBar(title: Text('Registro de Usuario')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Correo'),
+              decoration: InputDecoration(labelText: 'Correo'),
             ),
             TextField(
               controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Contraseña'),
+              decoration: InputDecoration(labelText: 'Contraseña'),
               obscureText: true,
             ),
             TextField(
               controller: _roleController,
-              decoration: const InputDecoration(
-                  labelText: 'Rol (Usuario o Administrador)'),
+              decoration:
+                  InputDecoration(labelText: 'Rol (Usuario o Administrador)'),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: _register,
-              child: const Text('Registrar'),
+              child: Text('Registrar'),
             ),
           ],
         ),
