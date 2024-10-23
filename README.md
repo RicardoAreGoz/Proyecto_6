@@ -29,6 +29,15 @@
 </table>
 <br>
 <h2>Introduction</h2>
-<h3>Mobile apps are a key part of modern life, and this project focuses on improving how users discover movies they'll love. By working on this app, we explore essential skills in mobile development, from intuitive design to delivering personalized experiences.</h3>
+<p>Mobile apps are a key part of modern life, and this project focuses on improving how users discover movies they'll love. By working on this app, we explore essential skills in mobile development, from intuitive design to delivering personalized experiences.</p>
 <br>
 <h2>Application Objective</h2>
+<p>The main goal of this app is to help users find movies they enjoy by offering personalized recommendations based on their tastes. It aims to make discovering new movies fun and effortless.</p>
+<br>
+<h2>System Requirements</h2>
+<ul>
+  <li>Flutter Version: 3.0.0 or higher</li>
+  <li>Dependecies: http, provider, sher_preferences, supabase_auth, supabase_core, supabase_flutter</li>
+  <li>Tools: VS Code, Supabase, Git for version control</li>
+</ul>
+
