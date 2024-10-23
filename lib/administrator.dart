@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'login.dart';
 
-class AdministratorPage extends StatelessWidget {
+class AdminPage extends StatelessWidget {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   @override

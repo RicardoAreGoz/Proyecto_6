@@ -9,13 +9,14 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _roleController = TextEditingController();
+  final _fullNameController = TextEditingController();
   final SupabaseClient _supabase = Supabase.instance.client;
 
   Future<void> _register() async {
+    final fullname = _fullNameController.text;
     final email = _emailController.text;
     final password = _passwordController.text;
-    final role = _roleController.text;
+    final role = "usuario";
 
     try {
       // Crear usuario en Supabase auth
@@ -50,6 +51,11 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Column(
           children: [
             TextField(
+              controller: _fullNameController,
+              decoration:
+                  InputDecoration(labelText: 'Nombre'),
+            ),
+            TextField(
               controller: _emailController,
               decoration: InputDecoration(labelText: 'Correo'),
             ),
@@ -58,11 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
               decoration: InputDecoration(labelText: 'Contraseña'),
               obscureText: true,
             ),
-            TextField(
-              controller: _roleController,
-              decoration:
-                  InputDecoration(labelText: 'Rol (Usuario o Administrador)'),
-            ),
+
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _register,
