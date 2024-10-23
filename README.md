@@ -41,3 +41,33 @@
   <li>Tools: VS Code, Supabase, Git for version control</li>
 </ul>
 
+<h2>Application Description</h2>
+<p>The movie recommendation app is designed to help users deiscover new films based on their preferences. By analyzing usr behavior, such as movie ratings and favorites, the app generates personalized reommendations tailored to each user's unique tastes. With an intuitive interface, users can easily search for movies, view detailed information, rate and review films, and save theit favorites for later. <br> The app leverages a modern and dynamic design, unsuring a smooth and engagin user experiences. It integrates Supabse for user authentication and data sotrage, ensuring secure access to personalized movie suggestions across devices.</p>
+<br>
+<h2>Source Code</h2>
+<h3>main.dart <br> import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'login.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: 'https://swtfclileswocqlkridr.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3dGZjbGlsZXN3b2NxbGtyaWRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0OTE4MzIsImV4cCI6MjA0NDA2NzgzMn0.57l_SskUVP27-FHPsz4FXbTRn7lOfRb_gt7lOB4Qs5I',
+  );
+  runApp(MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Titulo',
+      home: LoginPage(),
+    );
+  }
+}
+</h3>
