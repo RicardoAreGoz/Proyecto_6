@@ -45,7 +45,9 @@
 <p>The movie recommendation app is designed to help users deiscover new films based on their preferences. By analyzing usr behavior, such as movie ratings and favorites, the app generates personalized reommendations tailored to each user's unique tastes. With an intuitive interface, users can easily search for movies, view detailed information, rate and review films, and save theit favorites for later. <br> The app leverages a modern and dynamic design, unsuring a smooth and engagin user experiences. It integrates Supabse for user authentication and data sotrage, ensuring secure access to personalized movie suggestions across devices.</p>
 <br>
 <h2>Source Code</h2>
-<h3>main.dart <br> ```import 'package:flutter/material.dart';
+<h3>main.dart</h3>
+```
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'login.dart';
 
@@ -72,4 +74,3 @@ class MainApp extends StatelessWidget {
 }
 
 ```
-</h3>
