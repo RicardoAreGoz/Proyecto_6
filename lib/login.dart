@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'registro.dart';
-import 'administrator.dart';
+import 'admin.dart';
 import 'user.dart';
 
 
@@ -27,29 +27,31 @@ class _LoginPageState extends State<LoginPage> {
         password: password,
       );
 
-      final userId = response.user!.id;
-      final profile = await _supabase
-      .from('')
-      .select('')
-      .eq('id', userId)
-      .single();
+      if (response != null) {
+        final userId = response.user!.id;
+        final profile = await _supabase
+        .from('')
+        .select('')
+        .eq('id', userId)
+        .single();
 
       final role = profile['role'];
 
-      if (role == 'user') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) =>  UserPage()),
-        );
-      } else if (role == 'administrator') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) =>  AdministratorPage()),
-        );
-      } else {
-        throw 'Rol no reconocido';
+        if (role == 'user') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => UserPage()),
+          );
+        } else if (role == 'administrator') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => AdministratorPage()),
+          );
+        } else {
+          throw 'Rol no reconocido';
+        }
       }
-        } catch (error) {
+    } catch (error) {
       print('Error de autenticación: $error');
     }
   }
