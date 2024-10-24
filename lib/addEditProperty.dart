@@ -8,10 +8,10 @@ class AddEditMoviePage extends StatefulWidget {
   const AddEditMoviePage({Key? key, this.movieData}) : super(key: key);
 
   @override
-  _AddEditMoviePagePageState createState() => _AddEditMoviePagePageState();
+  _AddEditMoviePageState createState() => _AddEditMoviePageState();
 }
 
-class _AddEditMoviePagePageState extends State<AddEditMoviePage> {
+class _AddEditMoviePageState extends State<AddEditMoviePage> {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   final _nameController = TextEditingController();
@@ -25,19 +25,19 @@ class _AddEditMoviePagePageState extends State<AddEditMoviePage> {
   void initState() {
     super.initState();
     if (widget.movieData != null) {
-      _nameController.text = widget.movieData!['Titulo de la Pelicula'];
-      _countryController.text = widget.movieData!['Pais de origen'];
-      _yearController.text = widget.movieData!['Año de estreno'].toString();
-      _actorsController.text = widget.movieData!['Actores Principales'];
-      _categoryController.text = widget.movieData!['Categoria'];
-      _languageController.text = widget.movieData!['Idioma'];
+      _nameController.text = widget.movieData!['Titulo de la Pelicula'] ?? '';
+      _countryController.text = widget.movieData!['Pais de origen'] ?? '';
+      _yearController.text = (widget.movieData!['Año de estreno']?.toString() ?? '');
+      _actorsController.text = widget.movieData!['Actores Principales'] ?? '';
+      _categoryController.text = widget.movieData!['Categoria'] ?? '';
+      _languageController.text = widget.movieData!['Idioma'] ?? '';
     }
   }
 
   Future<void> _saveMovie() async {
     final movieName = _nameController.text;
     final country = _countryController.text;
-    final year = double.tryParse(_yearController.text);
+    final year = double.tryParse(_yearController.text) ?? 0; // Proporcionar un valor predeterminado
     final actors = _actorsController.text;
     final category = _categoryController.text;
     final language = _languageController.text;
@@ -50,11 +50,13 @@ class _AddEditMoviePagePageState extends State<AddEditMoviePage> {
         'año': year,
         'actores': actors,
         'categoria': category,
-        'idioma' : language,
+        'idioma': language,
       }).eq('id', id);
 
       if (response.error != null) {
-        // Manejar error aquí
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Error al actualizar: ${response.error!.message}'),
+        ));
       }
     } else {
       final response = await _supabase.from('peliculas').insert({
@@ -63,11 +65,13 @@ class _AddEditMoviePagePageState extends State<AddEditMoviePage> {
         'año': year,
         'actores': actors,
         'categoria': category,
-        'idioma' : language,
+        'idioma': language,
       });
 
       if (response.error != null) {
-        // Manejar error aquí
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Error al agregar: ${response.error!.message}'),
+        ));
       }
     }
     Navigator.pop(context);
@@ -94,9 +98,9 @@ class _AddEditMoviePagePageState extends State<AddEditMoviePage> {
             TextField(
               controller: _yearController,
               decoration: const InputDecoration(labelText: 'Año de estreno'),
-              keyboardType: TextInputType.number, // Teclado numérico
+              keyboardType: TextInputType.number,
               inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly // Solo permite dígitos
+                FilteringTextInputFormatter.digitsOnly
               ],
             ),
             TextField(

@@ -60,13 +60,18 @@ class AdminPage extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => AddEditMoviePage(movieData: data),
                           ),
-                        );
+                        ).then((_) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => AdminPage()),
+                          );
+                        });
                       },
                     ),
                     IconButton(
                       icon: const Icon(Icons.delete),
                       onPressed: () {
-                        _eliminarPropiedad(data['id'], context);
+                        _deleteMovie(data['id'], context);
                       },
                     ),
                   ],
@@ -86,19 +91,30 @@ class AdminPage extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => const AddEditMoviePage(),
             ),
-          );
+          ).then((_) {
+            // Volver a cargar la lista después de agregar
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => AdminPage()),
+            );
+          });
         },
       ),
     );
   }
 
-  Future<void> _eliminarPropiedad(int id, BuildContext context) async {
+  Future<void> _deleteMovie(int id, BuildContext context) async {
     final response = await _supabase.from('peliculas').delete().eq('id', id);
 
     if (response.error == null) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Eliminada exitosamente'),
       ));
+      // Volver a cargar la lista después de eliminar
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AdminPage()),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Error al eliminar: ${response.error!.message}'),
