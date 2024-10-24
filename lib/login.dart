@@ -6,6 +6,8 @@ import 'user.dart';
 
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -25,31 +27,29 @@ class _LoginPageState extends State<LoginPage> {
         password: password,
       );
 
-      if (response != null) {
-        final userId = response.user!.id;
-        final profile = await _supabase
-        .from('')
-        .select('')
-        .eq('id', userId)
-        .single();
+      final userId = response.user!.id;
+      final profile = await _supabase
+      .from('')
+      .select('')
+      .eq('id', userId)
+      .single();
 
-        final role = profile['role'];
+      final role = profile['role'];
 
-        if (role == 'user') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => UserPage()),
-          );
-        } else if (role == 'administrator') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => AdministratorPage()),
-          );
-        } else {
-          throw 'Rol no reconocido';
-        }
+      if (role == 'user') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) =>  UserPage()),
+        );
+      } else if (role == 'administrator') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) =>  AdministratorPage()),
+        );
+      } else {
+        throw 'Rol no reconocido';
       }
-    } catch (error) {
+        } catch (error) {
       print('Error de autenticación: $error');
     }
   }
@@ -57,13 +57,13 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext) {
     return Scaffold(
-      appBar: AppBar(title: Text('Iniciar Sesión')),
+      appBar: AppBar(title: const Text('Iniciar Sesión')),
       body: Center(
         child: Container(
           width: 400,
           height: 250,
           decoration: BoxDecoration(
-            color:Color.fromARGB(199, 230, 234, 236),
+            color:const Color.fromARGB(199, 230, 234, 236),
             borderRadius: BorderRadius.circular(16),
             ),
           padding: const EdgeInsets.all(16.0),
@@ -72,14 +72,14 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Correo'),
+                decoration: const InputDecoration(labelText: 'Correo'),
               ),
               TextField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Contraseña'),
+                decoration: const InputDecoration(labelText: 'Contraseña'),
                 obscureText: true,
               ),
-              SizedBox(height: 25,),
+              const SizedBox(height: 25,),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -88,24 +88,24 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   padding: const EdgeInsets.all(16),
                   foregroundColor: Colors.white,
-                  textStyle: TextStyle(
+                  textStyle: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500
                   ),
                 ),
                 onPressed: _login,
-                child: Text('Iniciar Sesión'),
+                child: const Text('Iniciar Sesión'),
               ),
-              SizedBox(height: 6,),
+              const SizedBox(height: 6,),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                  backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding: const EdgeInsets.all(16),
-                  foregroundColor: Color.fromARGB(255, 42, 45, 71),
-                  textStyle: TextStyle(
+                  foregroundColor: const Color.fromARGB(255, 42, 45, 71),
+                  textStyle: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                   ),
@@ -113,10 +113,10 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => RegisterPage()),
+                  MaterialPageRoute(builder: (context) => const RegisterPage()),
                 );
               },
-              child: Text('Registrarse'),)
+              child: const Text('Registrarse'),)
             ],
           ),
         ),
