@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'administrator.dart';
 import 'registro.dart';
 import 'admin.dart';
 import 'user.dart';
