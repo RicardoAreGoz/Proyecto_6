@@ -72,3 +72,327 @@ class MainApp extends StatelessWidget {
   }
 }
 ```
+<h3>Login.dart</h3>
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'registro.dart';
+import 'administrator.dart';
+import 'user.dart';
+
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final SupabaseClient _supabase = Supabase.instance.client;
+
+  Future<void> _login() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    try {
+      final response = await _supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+
+      final userId = response.user!.id;
+      final profile = await _supabase
+      .from('')
+      .select('')
+      .eq('id', userId)
+      .single();
+
+      final role = profile['role'];
+
+      if (role == 'user') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const UserPage()),
+        );
+      } else if (role == 'administrator') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const AdministratorPage()),
+        );
+      } else {
+        throw 'Rol no reconocido';
+      }
+        } catch (error) {
+      print('Error de autenticación: $error');
+    }
+  }
+
+  @override
+  Widget build(BuildContext) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Iniciar Sesión')),
+      body: Center(
+        child: Container(
+          width: 400,
+          height: 250,
+          decoration: BoxDecoration(
+            color:const Color.fromARGB(199, 230, 234, 236),
+            borderRadius: BorderRadius.circular(16),
+            ),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Correo'),
+              ),
+              TextField(
+                controller: _passwordController,
+                decoration: const InputDecoration(labelText: 'Contraseña'),
+                obscureText: true,
+              ),
+              const SizedBox(height: 25,),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  foregroundColor: Colors.white,
+                  textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500
+                  ),
+                ),
+                onPressed: _login,
+                child: const Text('Iniciar Sesión'),
+              ),
+              const SizedBox(height: 6,),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  foregroundColor: const Color.fromARGB(255, 42, 45, 71),
+                  textStyle: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RegisterPage()),
+                );
+              },
+              child: const Text('Registrarse'),)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+<h3>registro.dart</h3>
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _roleController = TextEditingController();
+  final SupabaseClient _supabase = Supabase.instance.client;
+
+  Future<void> _register() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    final role = _roleController.text;
+
+    try {
+      // Crear usuario en Supabase auth
+      final response = await _supabase.auth.signUp(
+        email: email,
+        password: password,
+      );
+
+      final userId = response.user?.id;
+
+      if (userId != null) {
+        // Insertar el rol en la tabla de perfiles
+        await _supabase.from('profiles').insert({
+          'id': userId,
+          'role': role,
+          'pass': password,
+        });
+
+        print('Usuario registrado exitosamente con rol: $role');
+      }
+    } catch (error) {
+      print('Error al registrar usuario: $error');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Registro de Usuario')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _emailController,
+              decoration: const InputDecoration(labelText: 'Correo'),
+            ),
+            TextField(
+              controller: _passwordController,
+              decoration: const InputDecoration(labelText: 'Contraseña'),
+              obscureText: true,
+            ),
+            TextField(
+              controller: _roleController,
+              decoration:
+                  const InputDecoration(labelText: 'Rol (Usuario o Administrador)'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _register,
+              child: const Text('Registrar'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+<h3>administrador.dart</h3>
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'login.dart';
+
+class AdministratorPage extends StatelessWidget {
+  final SupabaseClient _supabase = Supabase.instance.client;
+
+  const AdministratorPage({super.key});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Página de Administrador'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              // Cerrar sesión dentro del onPressed
+              await _supabase.auth.signOut();
+              // Redirigir al login
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
+            },
+          ),
+        ],
+      ),
+      body: FutureBuilder(
+        future: _supabase
+            .from('profiles')
+            .select('full_name')
+            .eq('id', _supabase.auth.currentUser!.id)
+            .single(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final userData = snapshot.data as Map<String, dynamic>;
+          return Center(
+            child: Text('Bienvenido, ${userData['full_name']}',
+                style: const TextStyle(fontSize: 24)),
+          );
+        },
+      ),
+    );
+  }
+}
+```
+<h3>user.dart</h3>
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'login.dart';
+
+class UserPage extends StatelessWidget {
+  final SupabaseClient _supabase = Supabase.instance.client;
+
+  const UserPage({super.key});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Página de Usuario'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await _supabase.auth.signOut();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
+            },
+          ),
+        ],
+      ),
+      body: FutureBuilder(
+        future: _supabase
+            .from('profiles')
+            .select('full_name')
+            .eq('id', _supabase.auth.currentUser!.id)
+            .single(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final userData = snapshot.data as Map<String, dynamic>;
+          return Center(
+            child: Text('Bienvenido, ${userData['full_name']}',
+                style: const TextStyle(fontSize: 24)),
+          );
+        },
+      ),
+    );
+  }
+}
+```
