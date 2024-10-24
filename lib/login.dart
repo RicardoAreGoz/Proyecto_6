@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'registro.dart';
-import 'administrator.dart';
+import 'admin.dart';
 import 'user.dart';
 
 
