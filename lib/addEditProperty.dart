@@ -18,28 +18,47 @@ class _AddEditMoviePagePageState extends State<AddEditMoviePage> {
   final _countryController = TextEditingController();
   final _yearController = TextEditingController();
   final _actorsController = TextEditingController();
-  final _categoryController = TextEditingController();
+  String? _selectedCategory; // Cambiar a String para el dropdown
   final _languageController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.movieData != null) {
-      _nameController.text = widget.movieData!['Titulo de la Pelicula'];
-      _countryController.text = widget.movieData!['Pais de origen'];
-      _yearController.text = widget.movieData!['Año de estreno'].toString();
-      _actorsController.text = widget.movieData!['Actores Principales'];
-      _categoryController.text = widget.movieData!['Categoria'];
-      _languageController.text = widget.movieData!['Idioma'];
+  // Lista de categorías predefinidas
+  final List<String> _categories = [
+    'Acción',
+    'Comedia',
+    'Drama',
+    'Terror',
+    'Ciencia Ficción',
+    'Romance',
+    'Documental',
+    // Agrega más categorías según sea necesario
+  ];
+
+@override
+void initState() {
+  super.initState();
+  if (widget.movieData != null) {
+    _nameController.text = widget.movieData!['titulo'] ?? '';
+    _countryController.text = widget.movieData!['pais'] ?? '';
+    _yearController.text = widget.movieData!['año']?.toString() ?? '';
+    _actorsController.text = widget.movieData!['actores'] ?? '';
+    
+    String? category = widget.movieData!['categoria'];
+    if (category != null && _categories.contains(category)) {
+      _selectedCategory = category;
+    } else {
+      _selectedCategory = _categories.isNotEmpty ? _categories.first : null;
     }
+    
+    _languageController.text = widget.movieData!['idioma'] ?? '';
   }
+}
 
   Future<void> _saveMovie() async {
     final movieName = _nameController.text;
     final country = _countryController.text;
     final year = double.tryParse(_yearController.text);
     final actors = _actorsController.text;
-    final category = _categoryController.text;
+    final category = _selectedCategory; // Usar variable para el dropdown
     final language = _languageController.text;
 
     if (widget.movieData != null) {
@@ -50,7 +69,7 @@ class _AddEditMoviePagePageState extends State<AddEditMoviePage> {
         'año': year,
         'actores': actors,
         'categoria': category,
-        'idioma' : language,
+        'idioma': language,
       }).eq('id', id);
 
       if (response.error != null) {
@@ -63,7 +82,7 @@ class _AddEditMoviePagePageState extends State<AddEditMoviePage> {
         'año': year,
         'actores': actors,
         'categoria': category,
-        'idioma' : language,
+        'idioma': language,
       });
 
       if (response.error != null) {
@@ -103,9 +122,20 @@ class _AddEditMoviePagePageState extends State<AddEditMoviePage> {
               controller: _actorsController,
               decoration: const InputDecoration(labelText: 'Actores Principales'),
             ),
-            TextField(
-              controller: _categoryController,
+            DropdownButtonFormField<String>(
+              value: _selectedCategory,
               decoration: const InputDecoration(labelText: 'Categoria'),
+              items: _categories.map((String category) {
+                return DropdownMenuItem<String>(
+                  value: category,
+                  child: Text(category),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedCategory = newValue;
+                });
+              },
             ),
             TextField(
               controller: _languageController,
