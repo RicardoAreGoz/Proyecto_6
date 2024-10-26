@@ -24,13 +24,17 @@ class _AddEditMoviePagePageState extends State<AddEditMoviePage> {
   // Lista de categorías predefinidas
   final List<String> _categories = [
     'Acción',
-    'Comedia',
-    'Drama',
-    'Terror',
+    'Aventura',
+    'Catástrofe',
     'Ciencia Ficción',
-    'Romance',
+    'Comedia',
     'Documental',
-    // Agrega más categorías según sea necesario
+    'Drama',
+    'Fantasía',
+    'Musical',
+    'Suspenso'
+    'Terror',
+    'Romance',
   ];
 
 @override

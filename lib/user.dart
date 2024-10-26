@@ -14,20 +14,30 @@ class _UserPageState extends State<UserPage> {
   String? selectedCategory;
   String? yearFilter;
   List<dynamic> peliculas = [];
-  List<String> categorias = [    
+  List<Comentario> comentarios = [];
+  List<String> categorias = [
     'Acción',
-    'Comedia',
-    'Drama',
-    'Terror',
+    'Aventura',
+    'Catástrofe',
     'Ciencia Ficción',
+    'Comedia',
+    'Documental',
+    'Drama',
+    'Fantasía',
+    'Musical',
+    'Suspenso'
+    'Terror',
     'Romance',
-    'Documental',]; // Lista para almacenar categorías
+  ];
+
+  int? selectedRating;
 
   @override
   void initState() {
     super.initState();
     fetchPeliculas();
     fetchCategorias();
+    fetchComentarios();
   }
 
   Future<void> fetchPeliculas() async {
@@ -37,34 +47,65 @@ class _UserPageState extends State<UserPage> {
         setState(() {
           peliculas = response;
         });
-      } else {
-        throw Exception('Error fetching movies: $response');
-      }
+      } 
     } catch (e) {
       print('Error fetching movies: $e');
-      // Aquí puedes mostrar un mensaje de error en la UI si lo deseas
     }
   }
 
-Future<void> fetchCategorias() async {
-  try {
-    final response = await _supabase
-        .from('peliculas')
-        .select('categoria')
-        .single();
-
-    if (response == null) {
-      final List<dynamic> data = response as List<dynamic>;
-      setState(() {
-        categorias = data.map((e) => e['categoria'] as String).toSet().toList();
-      });
-    } else {
-      
+  Future<void> fetchCategorias() async {
+    try {
+      final response = await _supabase.from('peliculas').select('categoria').single();
+      if (response != null) {
+        final List<dynamic> data = response as List<dynamic>;
+        setState(() {
+          categorias = data.map((e) => e['categoria'] as String).toSet().toList();
+        });
+      }
+    } catch (e) {
+      print('Error fetching categories: $e');
     }
-  } catch (e) {
-    print('Error fetching categories: $e');
   }
-}
+
+  Future<void> fetchComentarios() async {
+    try {
+      final response = await _supabase
+      .from('comentarios')
+      .select()
+      .order('created_at', ascending: false);
+      if (response is List) {
+        setState(() {
+          comentarios = response.map((e) => Comentario.fromJson(e)).toList();
+        });
+      }
+    } catch (e) {
+      print('Error fetching comments: $e');
+    }
+  }
+
+  Future<void> addComentario(String peliculaId, String comentario, int calificacion) async {
+    final userId = Supabase.instance.client.auth.currentUser?.id;
+    if (userId != null) {
+      try {
+        await _supabase.from('comentarios').insert({
+          'pelicula_id': peliculaId,
+          'usuario_id': userId,
+          'comentario': comentario,
+          'calificacion':calificacion,
+        });
+        fetchComentarios();
+      } catch (e) {
+        print('Error añadiendo comentario: $e');
+      }
+    }
+  }
+
+  void clearFilters() {
+    setState(() {
+      selectedCategory = null;
+      yearFilter = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +162,10 @@ Future<void> fetchCategorias() async {
                 ),
               ),
               SizedBox(width: 8),
+              IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: clearFilters, // Llama a la función para limpiar filtros
+              ),
             ],
           ),
           Expanded(
@@ -128,8 +173,7 @@ Future<void> fetchCategorias() async {
               itemCount: peliculas.length,
               itemBuilder: (context, index) {
                 final data = peliculas[index];
-
-                // Verifica que los datos tengan las propiedades necesarias
+                
                 if (data['categoria'] == null || data['año'] == null) {
                   return Container(); // Si no tiene las propiedades necesarias, no mostrar nada
                 }
@@ -140,15 +184,65 @@ Future<void> fetchCategorias() async {
                   return Container(); // Si no coincide con los filtros, no mostrar nada
                 }
 
-                return ListTile(
-                  title: Text(data['titulo']),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Año de publicación: ${data['año']}'),
-                      Text('Actores principales: ${data['actores']}'),
-                      Text('Categoría: ${data['categoria']}'),
-                    ],
+                return Card(
+                  margin: const EdgeInsets.all(8.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data['titulo'],
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 8),
+                        Text('Año de publicación: ${data['año']}'),
+                        Text('Categoría: ${data['categoria']}'),
+                        const SizedBox(height: 8),
+                        // Sección de comentarios
+                        const Text('Comentarios:', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ...comentarios
+                            .where((comentario) => comentario.peliculaId == data['id'].toString())
+                            .map((comentario) => ListTile(
+                                  title: Text(comentario.comentario),
+                                  subtitle: Text('Calificación: ${comentario.calificacion}'),
+                                )),
+                        // Dropdown para seleccionar la calificación
+                        DropdownButton<int>(
+                          value: selectedRating,
+                          hint: const Text('Selecciona una calificación'),
+                          items: List.generate(5, (index) {
+                            return DropdownMenuItem<int>(
+                              value: index + 1,
+                              child: Text('${index + 1}'),
+                            );
+                          }),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedRating = value;
+                            });
+                          },
+                        ),
+                        // Formulario para agregar un nuevo comentario
+                        TextField(
+                          decoration: const InputDecoration(
+                            labelText: 'Agregar un comentario',
+                          ),
+                          onSubmitted: (value) {
+                            if (selectedRating != null) {
+                              addComentario(data['id'].toString(), value, selectedRating!); // Aquí se utiliza el operador de nulabilidad !
+                            } else {
+                              // Mostrar un mensaje de error si no se seleccionó una calificación
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Por favor, selecciona una calificación'),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -156,6 +250,32 @@ Future<void> fetchCategorias() async {
           ),
         ],
       ),
+    );
+  }
+}
+
+class Comentario {
+  final String id;
+  final String peliculaId;
+  final String usuarioId;
+  final String comentario;
+  final int calificacion;
+
+  Comentario({
+    required this.id,
+    required this.peliculaId,
+    required this.usuarioId,
+    required this.comentario,
+    required this.calificacion,
+  });
+
+  factory Comentario.fromJson(Map<String, dynamic> json) {
+    return Comentario(
+      id: json['id'].toString(),
+      peliculaId: json['pelicula_id'].toString(),
+      usuarioId: json['usuario_id'].toString(),
+      comentario: json['comentario'],
+      calificacion: json['calificacion'],
     );
   }
 }
