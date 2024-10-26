@@ -68,11 +68,6 @@ class _RegisterPageState extends State<RegisterPage> {
               decoration: const InputDecoration(labelText: 'Contraseña'),
               obscureText: true,
             ),
-            TextField(
-              controller: _roleController,
-              decoration:
-                  InputDecoration(labelText: 'Rol (Usuario o Administrador)'),
-            ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _register,
