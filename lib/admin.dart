@@ -5,7 +5,8 @@ import 'addEditProperty.dart';
 
 class AdminPage extends StatelessWidget {
   final SupabaseClient _supabase = Supabase.instance.client;
-  final _future = Supabase.instance.client.from('peliculas').select();
+
+  AdminPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +17,7 @@ class AdminPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
-              // Cerrar sesión dentro del onPressed
               await _supabase.auth.signOut();
-              // Redirigir al login
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => LoginPage()),
@@ -27,11 +26,14 @@ class AdminPage extends StatelessWidget {
           ),
         ],
       ),
-      body: FutureBuilder(
-        future: _future,
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: _supabase.from('peliculas').stream(primaryKey: ['id']),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
           }
           final rawdata = snapshot.data!;
           return ListView.builder(
@@ -46,6 +48,7 @@ class AdminPage extends StatelessWidget {
                     Text('Año de publicacion: ${data['año']}'),
                     Text('Actores principales: ${data['actores']}'),
                     Text('Categoria: ${data['categoria']}'),
+                    Text('Idioma: ${data['idioma']}'),
                   ],
                 ),
                 trailing: Row(
@@ -54,7 +57,6 @@ class AdminPage extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.edit),
                       onPressed: () {
-                        // Navegar a la página de agregar/editar propiedad
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -80,7 +82,6 @@ class AdminPage extends StatelessWidget {
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
         onPressed: () {
-          // Navegar a la página de agregar propiedad
           Navigator.push(
             context,
             MaterialPageRoute(
