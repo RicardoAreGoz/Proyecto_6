@@ -3,7 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'login.dart';
 
 class UserPage extends StatefulWidget {
-  UserPage({super.key});
+  const UserPage({super.key});
 
   @override
   _UserPageState createState() => _UserPageState();
@@ -43,12 +43,10 @@ class _UserPageState extends State<UserPage> {
   Future<void> fetchPeliculas() async {
     try {
       final response = await _supabase.from('peliculas').select();
-      if (response is List) {
-        setState(() {
-          peliculas = response;
-        });
-      } 
-    } catch (e) {
+      setState(() {
+        peliculas = response;
+      });
+        } catch (e) {
       print('Error fetching movies: $e');
     }
   }
@@ -56,13 +54,11 @@ class _UserPageState extends State<UserPage> {
   Future<void> fetchCategorias() async {
     try {
       final response = await _supabase.from('peliculas').select('categoria').single();
-      if (response != null) {
-        final List<dynamic> data = response as List<dynamic>;
-        setState(() {
-          categorias = data.map((e) => e['categoria'] as String).toSet().toList();
-        });
-      }
-    } catch (e) {
+      final List<dynamic> data = response as List<dynamic>;
+      setState(() {
+        categorias = data.map((e) => e['categoria'] as String).toSet().toList();
+      });
+        } catch (e) {
       print('Error fetching categories: $e');
     }
   }
@@ -73,12 +69,10 @@ class _UserPageState extends State<UserPage> {
       .from('comentarios')
       .select()
       .order('created_at', ascending: false);
-      if (response is List) {
-        setState(() {
-          comentarios = response.map((e) => Comentario.fromJson(e)).toList();
-        });
-      }
-    } catch (e) {
+      setState(() {
+        comentarios = response.map((e) => Comentario.fromJson(e)).toList();
+      });
+        } catch (e) {
       print('Error fetching comments: $e');
     }
   }
@@ -132,7 +126,7 @@ class _UserPageState extends State<UserPage> {
             children: [
               Expanded(
                 child: DropdownButton<String>(
-                  hint: Text('Selecciona una categoría'),
+                  hint: const Text('Selecciona una categoría'),
                   value: selectedCategory,
                   onChanged: (newValue) {
                     setState(() {
@@ -147,10 +141,10 @@ class _UserPageState extends State<UserPage> {
                   }).toList(),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Expanded(
                 child: TextField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Año de publicación',
                     border: OutlineInputBorder(),
                   ),
@@ -161,9 +155,9 @@ class _UserPageState extends State<UserPage> {
                   },
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               IconButton(
-                icon: Icon(Icons.clear),
+                icon: const Icon(Icons.clear),
                 onPressed: clearFilters, // Llama a la función para limpiar filtros
               ),
             ],

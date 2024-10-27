@@ -20,7 +20,7 @@ class AdminPage extends StatelessWidget {
               await _supabase.auth.signOut();
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
+                MaterialPageRoute(builder: (context) => const LoginPage()),
               );
             },
           ),

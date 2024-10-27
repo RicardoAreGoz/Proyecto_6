@@ -27,31 +27,29 @@ class _LoginPageState extends State<LoginPage> {
         password: password,
       );
 
-      if (response != null) {
-        final userId = response.user!.id;
-        final profile = await _supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', userId)
-        .single();
+      final userId = response.user!.id;
+      final profile = await _supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', userId)
+      .single();
 
-      final role = profile['role'];
+    final role = profile['role'];
 
-        if (role == 'usuario') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => UserPage()),
-          );
-        } else if (role == 'admin') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => AdminPage()),
-          );
-        } else {
-          throw 'Rol no reconocido';
-        }
+      if (role == 'usuario') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => UserPage()),
+        );
+      } else if (role == 'admin') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => AdminPage()),
+        );
+      } else {
+        throw 'Rol no reconocido';
       }
-    } catch (error) {
+        } catch (error) {
       print('Error de autenticación: $error');
     }
   }
