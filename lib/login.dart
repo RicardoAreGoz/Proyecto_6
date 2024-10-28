@@ -4,6 +4,7 @@ import 'registro.dart';
 import 'admin.dart';
 import 'user.dart';
 
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -27,20 +28,23 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       final userId = response.user!.id;
-      final profile =
-          await _supabase.from('').select('').eq('id', userId).single();
+      final profile = await _supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', userId)
+      .single();
 
-      final role = profile['role'];
+    final role = profile['role'];
 
-      if (role == 'user') {
+      if (role == 'usuario') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => UserPage()),
         );
-      } else if (role == 'administrator') {
+      } else if (role == 'admin') {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => AdministratorPage()),
+          MaterialPageRoute(builder: (context) => AdminPage()),
         );
       } else {
         throw 'Rol no reconocido';
@@ -51,39 +55,70 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext) {
     return Scaffold(
       appBar: AppBar(title: const Text('Iniciar Sesión')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Correo'),
+      body: Center(
+        child: Container(
+          width: 400,
+          height: 250,
+          decoration: BoxDecoration(
+            color:const Color.fromARGB(199, 230, 234, 236),
+            borderRadius: BorderRadius.circular(16),
             ),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Contraseña'),
-              obscureText: true,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: _login,
-              child: const Text('Iniciar Sesión'),
-            ),
-            ElevatedButton(
-              onPressed: () {
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Correo'),
+              ),
+              TextField(
+                controller: _passwordController,
+                decoration: const InputDecoration(labelText: 'Contraseña'),
+                obscureText: true,
+              ),
+              const SizedBox(height: 25,),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  foregroundColor: Colors.white,
+                  textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500
+                  ),
+                ),
+                onPressed: _login,
+                child: const Text('Iniciar Sesión'),
+              ),
+              const SizedBox(height: 6,),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  foregroundColor: const Color.fromARGB(255, 42, 45, 71),
+                  textStyle: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => RegisterPage()),
+                  MaterialPageRoute(builder: (context) => const RegisterPage()),
                 );
               },
-              child: const Text('Ir al registro'),
-            )
-          ],
+              child: const Text('Registrarse'),)
+            ],
+          ),
         ),
       ),
     );
