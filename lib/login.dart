@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         child: Container(
           width: 400,
-          height: 250,
+          height: 425,
           decoration: BoxDecoration(
             color:const Color.fromARGB(199, 230, 234, 236),
             borderRadius: BorderRadius.circular(16),
