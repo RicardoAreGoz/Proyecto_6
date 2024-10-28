@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'login.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+Future<List<dynamic>> fetchMovies() async {
+  final response = await http.get(Uri.parse('http://127.0.0.1:5000/peliculas'));
+
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    throw Exception('Failed to load movies');
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
