@@ -30,8 +30,8 @@ class _UserPageState extends State<UserPage> {
     'Romance',
   ];
 
-  int? selectedRating;
-  final TextEditingController _commentController = TextEditingController(); // Controlador para el comentario
+  Map<String, int?> selectedRatings = {};
+  final TextEditingController _commentController = TextEditingController();
 
   @override
   void initState() {
@@ -225,7 +225,7 @@ class _UserPageState extends State<UserPage> {
                         Row(
                           children: [
                             DropdownButton<int>(
-                              value: selectedRating,
+                              value: selectedRatings[data['id'].toString()],
                               hint: const Text('Selecciona una calificación'),
                               items: List.generate(5, (index) {
                                 return DropdownMenuItem<int>(
@@ -235,15 +235,15 @@ class _UserPageState extends State<UserPage> {
                               }),
                               onChanged: (value) {
                                 setState(() {
-                                  selectedRating = value;
+                                  selectedRatings[data['id'].toString()] = value; // Guarda la calificación en el mapa
                                 });
                               },
                             ),
                             SizedBox(width: 8),
                             ElevatedButton(
                               onPressed: () {
-                                if (selectedRating != null) {
-                                  addComentario(data['id'].toString(), _commentController.text, selectedRating!); // Aquí se utiliza el operador de nulabilidad !
+                                if (selectedRatings[data['id'].toString()] != null) {
+                                  addComentario(data['id'].toString(), _commentController.text, selectedRatings[data['id'].toString()]!);
                                   _commentController.clear(); // Limpiar el campo de texto después de enviar el comentario
                                 } else {
                                   // Mostrar un mensaje de error si no se seleccionó una calificación
@@ -254,7 +254,7 @@ class _UserPageState extends State<UserPage> {
                                   );
                                 }
                               },
-                              child: const Text('Enviar Comentario'),
+                              child: const Text('Comentar'),
                             ),
                           ],
                         ),
