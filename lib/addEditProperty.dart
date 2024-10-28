@@ -5,7 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class AddEditMoviePage extends StatefulWidget {
   final Map<String, dynamic>? movieData;
 
-  const AddEditMoviePage({Key? key, this.movieData}) : super(key: key);
+  const AddEditMoviePage({super.key, this.movieData});
 
   @override
   _AddEditMoviePagePageState createState() => _AddEditMoviePagePageState();
@@ -47,7 +47,7 @@ void initState() {
     _actorsController.text = widget.movieData!['actores'] ?? '';
     
     String? category = widget.movieData!['categoria'];
-    if (category != null && _categories.contains(category)) {
+    if (_categories.contains(category)) {
       _selectedCategory = category;
     } else {
       _selectedCategory = _categories.isNotEmpty ? _categories.first : null;
