@@ -20,7 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final fullname = _fullNameController.text;
     final email = _emailController.text;
     final password = _passwordController.text;
-    final role = "usuario";
+    const role = "usuario";
 
     try {
       // Crear usuario en Supabase auth
@@ -57,7 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
             TextField(
               controller: _fullNameController,
               decoration:
-                  InputDecoration(labelText: 'Nombre'),
+                  const InputDecoration(labelText: 'Nombre'),
             ),
             TextField(
               controller: _emailController,
@@ -68,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
               decoration: const InputDecoration(labelText: 'Contraseña'),
               obscureText: true,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _register,
               child: const Text('Registrar'),
