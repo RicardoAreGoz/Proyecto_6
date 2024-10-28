@@ -25,12 +25,13 @@ class _UserPageState extends State<UserPage> {
     'Drama',
     'Fantasía',
     'Musical',
-    'Suspenso'
+    'Suspenso',
     'Terror',
     'Romance',
   ];
 
   int? selectedRating;
+  final TextEditingController _commentController = TextEditingController(); // Controlador para el comentario
 
   @override
   void initState() {
@@ -84,14 +85,14 @@ class _UserPageState extends State<UserPage> {
   }
 
   Future<void> addComentario(String peliculaId, String comentario, int calificacion) async {
-    final userId = Supabase.instance.client.auth.currentUser?.id;
+    final userId = Supabase.instance.client.auth.currentUser ?.id;
     if (userId != null) {
       try {
         await _supabase.from('comentarios').insert({
           'pelicula_id': peliculaId,
           'usuario_id': userId,
           'comentario': comentario,
-          'calificacion':calificacion,
+          'calificacion': calificacion,
         });
         fetchComentarios();
       } catch (e) {
@@ -147,7 +148,12 @@ class _UserPageState extends State<UserPage> {
                   }).toList(),
                 ),
               ),
-              SizedBox(width: 8),
+            ],
+          ),
+          SizedBox(height: 8), // Espacio entre los filtros
+          // Filtro por año y botón para limpiar
+          Row(
+            children: [
               Expanded(
                 child: TextField(
                   decoration: InputDecoration(
@@ -196,9 +202,12 @@ class _UserPageState extends State<UserPage> {
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
+                        Text('Actores Principales: ${data['actores']}'),
+                        Text('País de Origen: ${data['pais']}'),
                         Text('Año de publicación: ${data['año']}'),
                         Text('Categoría: ${data['categoria']}'),
-                        const SizedBox(height: 8),
+                        Text('Idioma Original: ${data['idioma']}'),
+                        const SizedBox(height: 30),
                         // Sección de comentarios
                         const Text('Comentarios:', style: TextStyle(fontWeight: FontWeight.bold)),
                         ...comentarios
@@ -207,39 +216,47 @@ class _UserPageState extends State<UserPage> {
                                   title: Text(comentario.comentario),
                                   subtitle: Text('Calificación: ${comentario.calificacion}'),
                                 )),
-                        // Dropdown para seleccionar la calificación
-                        DropdownButton<int>(
-                          value: selectedRating,
-                          hint: const Text('Selecciona una calificación'),
-                          items: List.generate(5, (index) {
-                            return DropdownMenuItem<int>(
-                              value: index + 1,
-                              child: Text('${index + 1}'),
-                            );
-                          }),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedRating = value;
-                            });
-                          },
-                        ),
-                        // Formulario para agregar un nuevo comentario
                         TextField(
+                          controller: _commentController, // Asignar el controlador al campo de texto
                           decoration: const InputDecoration(
                             labelText: 'Agregar un comentario',
                           ),
-                          onSubmitted: (value) {
-                            if (selectedRating != null) {
-                              addComentario(data['id'].toString(), value, selectedRating!); // Aquí se utiliza el operador de nulabilidad !
-                            } else {
-                              // Mostrar un mensaje de error si no se seleccionó una calificación
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Por favor, selecciona una calificación'),
-                                ),
-                              );
-                            }
-                          },
+                        ),
+                        Row(
+                          children: [
+                            DropdownButton<int>(
+                              value: selectedRating,
+                              hint: const Text('Selecciona una calificación'),
+                              items: List.generate(5, (index) {
+                                return DropdownMenuItem<int>(
+                                  value: index + 1,
+                                  child: Text('${index + 1}'),
+                                );
+                              }),
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedRating = value;
+                                });
+                              },
+                            ),
+                            SizedBox(width: 8),
+                            ElevatedButton(
+                              onPressed: () {
+                                if (selectedRating != null) {
+                                  addComentario(data['id'].toString(), _commentController.text, selectedRating!); // Aquí se utiliza el operador de nulabilidad !
+                                  _commentController.clear(); // Limpiar el campo de texto después de enviar el comentario
+                                } else {
+                                  // Mostrar un mensaje de error si no se seleccionó una calificación
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Por favor, selecciona una calificación'),
+                                    ),
+                                  );
+                                }
+                              },
+                              child: const Text('Enviar Comentario'),
+                            ),
+                          ],
                         ),
                       ],
                     ),

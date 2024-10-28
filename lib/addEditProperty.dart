@@ -60,7 +60,7 @@ void initState() {
   Future<void> _saveMovie() async {
     final movieName = _nameController.text;
     final country = _countryController.text;
-    final year = double.tryParse(_yearController.text);
+    final year = int.tryParse(_yearController.text);
     final actors = _actorsController.text;
     final category = _selectedCategory; // Usar variable para el dropdown
     final language = _languageController.text;
