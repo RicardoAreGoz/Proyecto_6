@@ -138,3 +138,7 @@ class _UserPageState extends State<UserPage> {
     );
   }
 }
+
+extension on Supabase {
+  rpc(String s, {required Map<String, int> params}) {}
+}
