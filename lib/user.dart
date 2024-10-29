@@ -31,7 +31,7 @@ class _UserPageState extends State<UserPage> {
   ];
 
   Map<String, int?> selectedRatings = {};
-  final TextEditingController _commentController = TextEditingController();
+  Map<String, TextEditingController> commentControllers = {};
 
   @override
   void initState() {
@@ -106,6 +106,15 @@ class _UserPageState extends State<UserPage> {
       selectedCategory = null;
       yearFilter = null;
     });
+  }
+
+  @override
+  void dispose() {
+    // Limpiar los controladores al salir de la página
+    commentControllers.forEach((key, controller) {
+      controller.dispose();
+    });
+    super.dispose();
   }
 
   @override
@@ -190,6 +199,10 @@ class _UserPageState extends State<UserPage> {
                   return Container(); // Si no coincide con los filtros, no mostrar nada
                 }
 
+                if (!commentControllers.containsKey(data['id'].toString())) {
+                    commentControllers[data['id'].toString()] = TextEditingController();
+                }
+
                 return Card(
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 elevation: 4,
@@ -253,7 +266,7 @@ class _UserPageState extends State<UserPage> {
                                   subtitle: Text('Calificación: ${comentario.calificacion}'),
                                 )),
                         TextField(
-                          controller: _commentController, // Asignar el controlador al campo de texto
+                          controller: commentControllers[data['id'].toString()], // Asignar el controlador único
                           decoration: const InputDecoration(
                             labelText: 'Agregar un comentario',
                           ),
@@ -279,8 +292,8 @@ class _UserPageState extends State<UserPage> {
                             ElevatedButton(
                               onPressed: () {
                                 if (selectedRatings[data['id'].toString()] != null) {
-                                  addComentario(data['id'].toString(), _commentController.text, selectedRatings[data['id'].toString()]!);
-                                  _commentController.clear(); // Limpiar el campo de texto después de enviar el comentario
+                                  addComentario(data['id'].toString(), commentControllers[data['id'].toString()]!.text, selectedRatings[data['id'].toString()]!);
+                                  commentControllers[data['id'].toString()]!.clear(); // Limpiar el campo de texto después de enviar el comentario
                                 } else {
                                   // Mostrar un mensaje de error si no se seleccionó una calificación
                                   ScaffoldMessenger.of(context).showSnackBar(
