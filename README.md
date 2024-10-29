@@ -1,9 +1,9 @@
 <h4 id='image-1'>
 <center>
 
-![usercommented-screen](images/README/upenlogo.jpg)
+<img src="images/README/upenlogo.jpg" alt="usercommented-screen" width="200"/>
 <center> Image 1. University Logo </center>
-</center> 
+</center>
 
 # Movie Recommendation Application
 
@@ -40,7 +40,7 @@ We aim to create a user-friendly application that has two roles within it, each 
 
 - **Flutter Version:** 3.24.4 or higher  
 - **Dart SDK Version:** >=3.3.4 < 4.0.0  
-- **Dependencies:** http, provider, shared_preferences, supabase_auth, supabase_core, supabase_flutter.  
+- **Dependencies:** provider, shared_preferences, supabase_auth, supabase_core, supabase_flutter.  
 - **Tools:** Visual Studio Code, Supabase, GitHub and Git for version control.
 
 ### Functional Requirements
@@ -1041,63 +1041,63 @@ class Comentario {
 <h4 id='image-2'>
 <center>
 
-![login-screen](images/README/login.jpg)
+<img src="images/README/login.jpg" alt="login-screen" width="200"/>
 <center> Image 2. LogIn Screen </center>
 </center>
 
 <h4 id='image-3'>
 <center>
 
-![signup-screen](images/README/signup.jpg)
+<img src="images/README/signup.jpg" alt="signup-screen" width="200"/>
 <center> Image 3. SignUp Screen </center>
 </center>
 
 <h4 id='image-4'>
 <center>
 
-![adminlistview-screen](images/README/adminlistview.jpg)
+<img src="images/README/adminlistview.jpg" alt="adminlistview-screen" width="200"/>
 <center> Image 4. Admin ListView </center>
 </center>
 
 <h4 id='image-5'>
 <center>
 
-![addingmovie-screen](images/README/addingamovie.jpg)
+<img src="images/README/addingamovie.jpg" alt="addingmovie-screen" width="200"/>
 <center> Image 5. Admin Adding New Movie </center>
 </center>
 
 <h4 id='image-6'>
 <center>
 
-![editingmovie-screen](images/README/editingamovie.jpg)
+<img src="images/README/editingamovie.jpg" alt="editingmovie-screen" width="200"/>
 <center> Image 6. Admin Editing Movie </center>
 </center>
 
 <h4 id='image-7'>
 <center>
 
-![userlistview-screen](images/README/userlistview.jpg)
+<img src="images/README/userlistview.jpg" alt="userlistview-screen" width="200"/>
 <center> Image 7. User ListView </center>
 </center>
 
 <h4 id='image-8'>
 <center>
 
-![userfiltering-screen](images/README/userfiltering.jpg)
+<img src="images/README/userfiltering.jpg" alt="userfiltering-screen" width="200"/>
 <center> Image 8. User Filtering </center>
 </center>
 
 <h4 id='image-9'>
 <center>
 
-![usercommenting-screen](images/README/usercommenting.jpg)
+<img src="images/README/usercommenting.jpg" alt="usercommenting-screen" width="200"/>
 <center> Image 9. User Commenting </center>
 </center>
 
 <h4 id='image-10'>
 <center>
 
-![usercommented-screen](images/README/usercommented.jpg)
+<img src="images/README/usercommented.jpg" alt="usercommented-screen" width="200"/>
 <center> Image 10. User Commented </center>
 </center>
 
