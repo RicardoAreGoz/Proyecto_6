@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'login.dart';
-import 'addEditProperty.dart';
+import 'addEditMovie.dart';
 
 class AdminPage extends StatelessWidget {
   final SupabaseClient _supabase = Supabase.instance.client;
