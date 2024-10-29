@@ -191,7 +191,9 @@ class _UserPageState extends State<UserPage> {
                 }
 
                 return Card(
-                  margin: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                elevation: 4,
+                color: const Color.fromARGB(199, 230, 234, 236),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -201,12 +203,46 @@ class _UserPageState extends State<UserPage> {
                           data['titulo'],
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(height: 8),
-                        Text('Actores Principales: ${data['actores']}'),
-                        Text('País de Origen: ${data['pais']}'),
-                        Text('Año de publicación: ${data['año']}'),
-                        Text('Categoría: ${data['categoria']}'),
-                        Text('Idioma Original: ${data['idioma']}'),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Categoría: ${data['categoria']}',
+                            style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Color.fromARGB(255, 42, 45, 71),
+                           ),
+                          ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Actores Principales: ${data['actores']}',
+                            style: const TextStyle(
+                            fontSize: 14,
+                            color: Color.fromARGB(255, 96, 98, 100),
+                            ),
+                          ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'País de Origen: ${data['pais']}',
+                            style: const TextStyle(
+                            fontSize: 14,
+                            color: Color.fromARGB(255, 96, 98, 100),
+                            ),
+                          ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Año de publicación: ${data['año']}',
+                            style: const TextStyle(
+                            fontSize: 14,
+                            color: Color.fromARGB(255, 96, 98, 100),
+                            ),
+                          ),
+                        const SizedBox(height: 2),
+                        Text('Idioma Original: ${data['idioma']}',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Color.fromARGB(255, 96, 98, 100),
+                            ),
+                          ),
                         const SizedBox(height: 30),
                         // Sección de comentarios
                         const Text('Comentarios:', style: TextStyle(fontWeight: FontWeight.bold)),

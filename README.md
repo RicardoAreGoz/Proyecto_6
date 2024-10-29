@@ -1,35 +1,19 @@
-<h1>Aplicacion de recomendacion de peliculas</h1>
+<h1>Movie Recomendation Application</h1>
 <h3>Salinas Guardado Alexis Noe <br> Arellano González Ricardo <br> Course: Mobile Applications 2 <br> 10/24/2024 <br> Iriarte Martínez Carlos Alberto</h3>
 <br>
 <table>
-  <tr>
-    <th>Table of Contents</th>
-  </tr>
-  <tr>
-    <th>Introduction</th>
-  </tr>
-  <tr>
-    <th>Application Objective</th>
-  </tr>
-  <tr>
-    <th>System Requirement</th>
-  </tr>
-  <tr>
-    <th>Application Description</th>
-  </tr>
-  <tr>
-    <th>Source Code</th>
-  </tr>
-  <tr>
-    <th>Evidence Screenshots</th>
-  </tr>
-  <tr>
-    <th>Results and Conclusion</th>
-  </tr>
+  <tr> <th>Table of Contents</th> </tr>
+  <tr> <th>Introduction</th> </tr>
+  <tr> <th>Application Objective</th> </tr>
+  <tr> <th>System Requirement</th> </tr>
+  <tr> <th>Application Description</th> </tr>
+  <tr> <th>Source Code</th> </tr>
+  <tr> <th>Evidence Screenshots</th> </tr>
+  <tr> <th>Results and Conclusion</th> </tr>
 </table>
 <br>
 <h2>Introduction</h2>
-<p>Mobile apps are a key part of modern life, and this project focuses on improving how users discover movies they'll love. By working on this app, we explore essential skills in mobile development, from intuitive design to delivering personalized experiences.</p>
+<p>The present project aims to develop a movie recommendation application designed to offer users an easy and enriching browsing experience. The application will feature two distinct roles, each with specific functionalities tailored to the users' roles. To carry out this development, tools such as Supabase, Flutter, and GitHub have been utilized, facilitating data management, the creation of attractive interfaces, and version control of the project. Through this application, we seek to create a simplified movie search experience and provide recommendations that enhance the user's overall experience.</p>
 <br>
 <h2>Application Objective</h2>
 <p>The main goal of this app is to help users find movies they enjoy by offering personalized recommendations based on their tastes. It aims to make discovering new movies fun and effortless.</p>

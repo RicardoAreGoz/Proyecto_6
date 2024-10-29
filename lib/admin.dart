@@ -40,38 +40,76 @@ class AdminPage extends StatelessWidget {
             itemCount: rawdata.length,
             itemBuilder: (context, index) {
               final data = rawdata[index];
-              return ListTile(
-                title: Text(data['titulo']),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Año de publicacion: ${data['año']}'),
-                    Text('Actores principales: ${data['actores']}'),
-                    Text('Categoria: ${data['categoria']}'),
-                    Text('Idioma: ${data['idioma']}'),
-                  ],
-                ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddEditMoviePage(movieData: data),
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                elevation: 4,
+                color: const Color.fromARGB(199, 230, 234, 236),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        data['titulo'],
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Año de publicación: ${data['año']}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        'Actores principales: ${data['actores']}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 96, 98, 100),
+                        ),
+                      ),
+                      Text(
+                        'Categoría: ${data['categoria']}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 96, 98, 100),
+                        ),
+                      ),
+                      Text(
+                        'Idioma: ${data['idioma']}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 96, 98, 100),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddEditMoviePage(movieData: data),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () {
-                        _eliminarPropiedad(data['id'], context);
-                      },
-                    ),
-                  ],
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              _eliminarPropiedad(data['id'], context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
